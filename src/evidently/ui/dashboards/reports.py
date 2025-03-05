@@ -143,6 +143,12 @@ class DashboardPanelCounter(DashboardPanel):
             )[1]
         if self.agg == CounterAgg.SUM:
             return sum(pi.value or 0 for vs in points.values() for pi in vs)
+        if self.agg == CounterAgg.AVG:
+            total_sum = sum(pi.value or 0 for vs in points.values() for pi in vs)
+            total_count = sum(len(vs) for vs in points.values())
+            if total_count == 0:
+                return 0
+            return total_sum / total_count
         raise ValueError(f"Unknown agg type {self.agg}")
 
 
